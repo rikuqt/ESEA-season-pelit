@@ -1,3 +1,7 @@
+.jeejee {
+  font-size: xx-large;
+}
+
 body {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
@@ -12,4 +16,5 @@ body {
 .Logo {
     width: 70px;
     height: 70px;
+    border-radius: 50%;
   }
