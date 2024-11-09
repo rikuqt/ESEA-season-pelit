@@ -16,8 +16,19 @@ import './App.css'
     return time;
   }
 
-const UpcomingGame = ({competition, fc1_avatar, fc2_avatar, fc1_name, fc2_name, aika}) => {
-  return <div className="center">
+  // Haku pelin mapin kuvalle
+  function mapinKuva () {
+    let mapinKuva_id = ""
+    matchroom.voting.map.entities.forEach(mappi => {
+      if (mappi.game_map_id == matchroom.voting.map.pick[0]){
+        mapinKuva_id = mappi.image_lg
+      }
+    })
+  return mapinKuva_id
+}
+
+const UpcomingGame = ({mapin_kuva, competition, fc1_avatar, fc2_avatar, fc1_name, fc2_name, aika}) => {
+  return <div style={{backgroundImage: `url(${mapin_kuva})`}} className="center">
     <h2>Tuleva peli: </h2>
     <h1>{competition}</h1>
     <p className="jeejee"><img src={fc1_avatar} className="Logo" /> {fc1_name} vs {fc2_name} <img src={fc2_avatar} className="Logo" /></p>
@@ -36,7 +47,7 @@ const GameDefault = ({competition, score, fc1_avatar, fc2_avatar, fc1_name, fc2_
   return <div className="center">
     <h2>Viimeisin peli: </h2>
     <h1>{competition}</h1>
-    <p>{score}</p> <p className="jeejee"><img src={fc1_avatar} className="Logo" /> {fc1_name} vs {fc2_name} <img src={fc2_avatar} className="Logo" /></p>
+    <p className="jeejee">{score}</p> <p className="jeejee"><img src={fc1_avatar} className="Logo" /> {fc1_name} vs {fc2_name} <img src={fc2_avatar} className="Logo" /></p>
     <p>Voittaja: {winner} <form action="https://stackoverflow.com/questions/2906582/how-do-i-create-an-html-button-that-acts-like-a-link"><input type="submit" value="Lataa demo"/></form>
     </p>
     </div>
@@ -109,24 +120,13 @@ function App() {
         },
         competition_name: upComingGame_competition_type
       } = upComingMatch;
-      
-      
-
-      // Fillteri mapin kuvalle (kesken)
-      const mapinKuva = () => {
-        const pickattu_mappi = matchroom.voting.map.pick[0]
-        console.log(pickattu_mappi)
-        const filtteri = matchroom.voting.map.entities.filter(pelattuMappi => ``.includes(pickattu_mappi))
-
-      }
-     
-
+      // Tarvittavat muuttujat
       const roundScore = stats.rounds[0].round_stats.Score
       const kaitonki_id = "1ce16320-21c5-4cfe-a4e1-1fcb599a2a35"
-
-    
-
-
+      
+      // Asyncistä ei saa otettua tämän tietoja -> joku ratkaisu axiokseen ettei
+      // tule virheitä siitä ettei dataa ole vielä saatu 
+      // mapinKuva={mapinKuva()} 
 
   return (
     <div>
