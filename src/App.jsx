@@ -25,7 +25,7 @@ import './App.css'
       </div>
   }
 
-  const GameDefault = ({mapinKuva_osoite, competition, score, fc1_avatar, fc2_avatar, fc1_name, fc2_name, fc1_id, kaitonki_id, winner_id}) => {
+  const LastGame = ({mapinKuva_osoite, competition, score, fc1_avatar, fc2_avatar, fc1_name, fc2_name, fc1_id, kaitonki_id, winner_id}) => {
     let winner
     if (fc1_id!==kaitonki_id && kaitonki_id!==winner_id) {
       winner=fc1_name
@@ -37,7 +37,7 @@ import './App.css'
       <h2>Viimeisin peli: </h2>
       <h1>{competition}</h1>
       <p className="jeejee">{score}</p> <p className="jeejee"><img src={fc1_avatar} className="Logo" /> {fc1_name} vs {fc2_name} <img src={fc2_avatar} className="Logo" /></p>
-      <p>Voittaja: {winner} <form action="https://stackoverflow.com/questions/2906582/how-do-i-create-an-html-button-that-acts-like-a-link"><input type="submit" value="Lataa demo"/></form>
+      <p>Voittaja: {winner} 
       </p>
       </div>
   }
@@ -75,8 +75,9 @@ function App() {
           setMatchroom(responseOne.data),
           setStats(responseTwo.data),
           setUpComingMatch(responseThree.data),
-          console.log(responseOne.data),
-          console.log(responseThree.data),
+          console.log("Mennyt peli:", responseOne.data),
+          console.log("Tuleva peli:", responseThree.data),
+          console.log("Matsin statsit", responseTwo.data)
           console.log("kaikki data haettu"),
           setLoading(false)
         }))
@@ -107,6 +108,8 @@ function App() {
         competition_name: upComingGame_competition_type
       } = upComingMatch;
 
+    
+
 
       // Tarvittavat muuttujat
       const roundScore = stats.rounds[0].round_stats.Score
@@ -128,12 +131,57 @@ function App() {
       return mapinKuva_id
     }
 
+
+    // Pelaajien statsit
+    function Statsit2(){
+      const pelaajienStatsit = Kaitonki()
+      pelaajienStatsit.sort((a, b) => b.player_stats.ADR - a.player_stats.ADR) // ADR mukaan scoreboard järjestys
+      return(
+        <table>
+        {pelaajienStatsit.map((pelaaja) => (
+          <tr key={pelaaja.id}>{pelaaja.nickname} {pelaaja.player_stats.Kills}/{pelaaja.player_stats.Deaths} ADR: {pelaaja.player_stats.ADR}</tr>
+        ))}
+      </table>
+      )
+    }
+
+    // Kumpi tiimi kaitonki on
+    function Kaitonki() {
+      let kaitonkiStatsit
+      if (stats.rounds[0].teams[0].team_id == kaitonki_id) {
+        return kaitonkiStatsit = stats.rounds[0].teams[0].players
+      } else {
+        return kaitonkiStatsit = stats.rounds[0].teams[1].players
+      }
+    }
+  
+   
+
   return (
     <div>
     <body>
-      <UpcomingGame competition={upComingGame_competition_type} fc1_avatar={upComingGame_fc1_avatar} fc2_avatar={upComingGame_fc2_avatar} fc1_name={upComingGame_fc1_name} fc2_name={upComingGame_fc2_name} aika={tulevaPeli_aika}/>
-      <GameDefault mapinKuva_osoite={MapinKuva()} competition={LastGame_competition_type} score={roundScore} fc1_avatar={LastGame_fc1_avatar} fc2_avatar={LastGame_fc2_avatar}
-      fc1_name={LastGame_fc1_name} fc2_name={LastGame_fc2_name} fc1_id={LastGame_fc1_id} kaitonki_id={kaitonki_id} winner_id={LastGame_winner_id}/>   
+    {Statsit2()}
+      
+      <UpcomingGame 
+      competition={upComingGame_competition_type}
+      fc1_avatar={upComingGame_fc1_avatar}
+      fc2_avatar={upComingGame_fc2_avatar}
+      fc1_name={upComingGame_fc1_name}
+      fc2_name={upComingGame_fc2_name}
+      aika={tulevaPeli_aika}/>
+
+      <LastGame 
+      mapinKuva_osoite={MapinKuva()}
+      competition={LastGame_competition_type}
+      score={roundScore}
+      fc1_avatar={LastGame_fc1_avatar}
+      fc2_avatar={LastGame_fc2_avatar}
+      fc1_name={LastGame_fc1_name}
+      fc2_name={LastGame_fc2_name}
+      fc1_id={LastGame_fc1_id}
+      kaitonki_id={kaitonki_id}
+      winner_id={LastGame_winner_id}/>
+
       </body>
     </div>
   )
