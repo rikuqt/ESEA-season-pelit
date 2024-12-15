@@ -2,6 +2,9 @@ import React, {useEffect, useState} from "react"
 import axios from "axios"
 import './App.css'
 
+  
+  const Button = ({text, onClick}) => <button onClick={onClick}>{text}</button>
+
   // HAE TIEDOT KOSKA PELI ALKAA
   function timeConverter(pelin_aika){
     var a = new Date(pelin_aika * 1000);
@@ -17,7 +20,7 @@ import './App.css'
   }
 
   const UpcomingGame = ({competition, fc1_avatar, fc2_avatar, fc1_name, fc2_name, aika}) => {
-    return <div className="center">
+    return <div className="boxi">
       <h2>Tuleva peli: </h2>
       <h1>{competition}</h1>
       <p className="jeejee"><img src={fc1_avatar} className="Logo" /> {fc1_name} vs {fc2_name} <img src={fc2_avatar} className="Logo" /></p>
@@ -25,7 +28,8 @@ import './App.css'
       </div>
   }
 
-  const LastGame = ({mapinKuva_osoite, competition, score, fc1_avatar, fc2_avatar, fc1_name, fc2_name, fc1_id, kaitonki_id, winner_id}) => {
+  const LastGame = ({mapinKuva_osoite, competition, score, fc1_avatar, fc2_avatar,
+    fc1_name, fc2_name, fc1_id, kaitonki_id, winner_id, show, toggleShow, Statsit2}) => {
     let winner
     if (fc1_id!==kaitonki_id && kaitonki_id!==winner_id) {
       winner=fc1_name
@@ -33,12 +37,16 @@ import './App.css'
       winner=fc2_name
     }
 
-    return <div  style={{backgroundImage: `url(${mapinKuva_osoite})`}} className="center">
+    return <div  style={{backgroundImage: `url(${mapinKuva_osoite})`}} className="boxi">
       <h2>Viimeisin peli: </h2>
       <h1>{competition}</h1>
       <p className="jeejee">{score}</p> <p className="jeejee"><img src={fc1_avatar} className="Logo" /> {fc1_name} vs {fc2_name} <img src={fc2_avatar} className="Logo" /></p>
       <p>Voittaja: {winner} 
       </p>
+      <Button onClick={() => toggleShow(!show)}
+      text={show ? "Piilota statsit" : "Näytä statsit"}>
+      </Button>
+      {show && Statsit2()}
       </div>
   }
 
@@ -48,7 +56,7 @@ function App() {
     const [stats ,setStats] = useState([])
     const [upComingMatch ,setUpComingMatch] = useState([])
     const [loading, setLoading] = useState(true);
-    
+    const [show, toggleShow] = useState(false)
 
     // Api key + 
     const api_key = "3c7c45ce-12d8-4f53-af38-95b64a714dd5"
@@ -64,7 +72,7 @@ function App() {
       headers: {Authorization: `Bearer ${api_key}`}
     }
 
-    // Moneen apiin
+    // Haetaan data 3 eri pyynnöllä -> tuleva peli, viimeisin peli ja matsin statsit
     const fetchInfo = () => {
       const requestOne = axios.get(matchroom_url, config)
       const requestTwo = axios.get(matchStats_url, config)
@@ -88,6 +96,11 @@ function App() {
       }, [])
 
       if (loading) return <div>Ladataan tietoja...</div>;
+
+
+      /*
+        Muuttujat mitä tarvitaan ja nimetty paremmin selkeydeksi  
+      */
 
       // Pelattu peli
       const {
@@ -115,9 +128,8 @@ function App() {
       const roundScore = stats.rounds[0].round_stats.Score
       const kaitonki_id = "1ce16320-21c5-4cfe-a4e1-1fcb599a2a35"
       const tulevaPeli_aika = upComingMatch.scheduled_at
-      // Asyncistä ei saa otettua tämän tietoja -> joku ratkaisu axiokseen ettei
-      // tule virheitä siitä ettei dataa ole vielä saatu 
-      // mapinKuva={mapinKuva()} 
+      
+
 
       
   // Haku pelin mapin kuvalle + ei toimi app:n ulkopuolella -> async kusee
@@ -137,7 +149,7 @@ function App() {
       const pelaajienStatsit = Kaitonki()
       pelaajienStatsit.sort((a, b) => b.player_stats.ADR - a.player_stats.ADR) // ADR mukaan scoreboard järjestys
       return(
-        <table>
+        <table className="p">
         {pelaajienStatsit.map((pelaaja) => (
           <tr key={pelaaja.id}>{pelaaja.nickname} {pelaaja.player_stats.Kills}/{pelaaja.player_stats.Deaths} ADR: {pelaaja.player_stats.ADR}</tr>
         ))}
@@ -154,13 +166,11 @@ function App() {
         return kaitonkiStatsit = stats.rounds[0].teams[1].players
       }
     }
-  
-   
+
 
   return (
     <div>
     <body>
-    {Statsit2()}
       
       <UpcomingGame 
       competition={upComingGame_competition_type}
@@ -180,11 +190,14 @@ function App() {
       fc2_name={LastGame_fc2_name}
       fc1_id={LastGame_fc1_id}
       kaitonki_id={kaitonki_id}
-      winner_id={LastGame_winner_id}/>
+      winner_id={LastGame_winner_id}
+      show={show} 
+      toggleShow={toggleShow}
+      Statsit2={Statsit2}/>
 
-      </body>
+    </body>
     </div>
-  )
-}
+    )
+  }
 
 export default App

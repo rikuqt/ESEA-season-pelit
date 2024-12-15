@@ -1,28 +1,93 @@
-div {
-  background-color: rgb(78, 78, 78);
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:200');
+
+.boxi {
+  margin: auto;
+  width: 50%;
+  height: 90%;
+  border: 3px solid rgb(0, 0, 0);
+  padding: 20px;
+  text-align: center;
+  background-image: url(https://preludi.fi/wp-content/uploads/2024/07/image_processing20230810-35-1tkecnx.webp);
+  background-size: 100% 100%;
 }
 
-.jeejee {
-  font-size: xx-large;
+h1,h2 {
+  font-size: 25px;
+  font-family:monospace;
+  color: rgb(255, 255, 255);
+  text-shadow: 2px 2px 2px rgb(0, 0, 0);
 }
 
-body {
-    font-family:monospace;
-    color: rgb(255, 255, 255);
-    text-shadow: 2px 2px 2px rgb(0, 0, 0);
-  }
+p {
+  font-size: 18px;
+  font-family:monospace;
+  color: rgb(255, 255, 255);
+  text-shadow: 2px 2px 2px rgb(0, 0, 0);
+}
 
-.center {
-    margin: auto;
-    width: 55%;
-    border: 3px solid rgb(0, 0, 0);
-    padding: 20px;
-    text-align: center;
-    background-image: url(https://preludi.fi/wp-content/uploads/2024/07/image_processing20230810-35-1tkecnx.webp);
-    background-size: 100% 100%;
-  }
+table {
+  font-size: 18px;
+  font-family:monospace;
+  color: rgb(255, 255, 255);
+  text-shadow: 2px 2px 2px rgb(0, 0, 0);
+  display:flex;
+}
+
+
 .Logo {
     width: 70px;
     height: 70px;
     border-radius: 50%;
   }
+
+  button {
+      display: inline-block;
+      flex-direction: column;
+      align-items: center;
+      padding: 6px 14px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+      border-radius: 6px;
+      border: none;
+    
+      color: #fff;
+      background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
+       background-origin: border-box;
+      box-shadow: 0px 0.5px 1.5px rgba(54, 122, 246, 0.25), inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2);
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    
+    .button-10:focus {
+      box-shadow: inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2), 0px 0.5px 1.5px rgba(54, 122, 246, 0.25), 0px 0px 0px 3.5px rgba(58, 108, 217, 0.5);
+      outline: 0;
+    }  
+
+
+    body  {
+        background-image: url('https://www.pcgamesn.com/wp-content/sites/pcgamesn/2023/04/counter-strike-2-system-requirements.jpg');
+      background-size:cover;
+      /*filter: blur(1px);*/
+            -webkit-animation: slidein 100s;
+            animation: slidein 100s;
+    
+            -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+    
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+    
+            -webkit-animation-direction: alternate;
+            animation-direction: alternate;              
+    }
+    
+    @-webkit-keyframes slidein {
+    from {background-position: top; background-size:3000px; }
+    to {background-position: -100px 0px;background-size:2750px;}
+    }
+    
+    @keyframes slidein {
+    from {background-position: top;background-size:3000px; }
+    to {background-position: -100px 0px;background-size:2750px;}
+    
+    }
