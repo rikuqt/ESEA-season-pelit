@@ -59,7 +59,7 @@ function App() {
     const [show, toggleShow] = useState(false)
 
     // Api key + 
-    const api_key = "3c7c45ce-12d8-4f53-af38-95b64a714dd5"
+    const api_key = import.meta.env.VITE_FACEIT_API
     const game_id = "1-5cb0778d-8900-478a-b250-a49a1af261af"
     const upcoming_game_id = "1-71628d2c-011c-42ee-8199-80e20ad7e2fc"
     const matchStats_url = `https://open.faceit.com/data/v4/matches/${game_id}/stats`
@@ -151,7 +151,9 @@ function App() {
       return(
         <table className="p">
         {pelaajienStatsit.map((pelaaja) => (
+          <div>
           <tr key={pelaaja.id}>{pelaaja.nickname} {pelaaja.player_stats.Kills}/{pelaaja.player_stats.Deaths} ADR: {pelaaja.player_stats.ADR}</tr>
+          </div>
         ))}
       </table>
       )
