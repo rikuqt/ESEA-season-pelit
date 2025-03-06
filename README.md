@@ -3,6 +3,8 @@
 # Tiimin ESEA-pelien seuraaja
 - Tällä versiolla näkee edellisen pelin ja pelaajien statistiikan.
 - Tulevan pelin ja ajankohdan milloin matchroomin aukeaa
+- Pelin taustakuva vaihtuu sen mukaan mikä kartta on pelattu
+- Pelaajien statsit saa näkyviin
 
 ## Tech
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white)
